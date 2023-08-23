@@ -1,14 +1,17 @@
 import React from "react";
 import { Button, Form, Container, Row, Col, Card } from "react-bootstrap";
 import { useState, useRef, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 function Registration() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [pass, setPassword] = useState("");
   const password = useRef("");
   const [cpassword, setcPassword] = useState("");
   const [error, setError] = useState("");
   const [login, setLogin] = useState([]);
+  const navigate = useNavigate();
 
   const [pwdValidation, setPwdValidation] = useState({
     lowercase: false,
@@ -35,7 +38,6 @@ function Registration() {
 
   const validatePasword = (e) => {
     const password = e.target.value;
-    console.log(password);
     // regex.test(string)
     const lowercase = /(?=.*[a-z])/.test(password);
     const uppercase = /(?=.*[A-Z])/.test(password);
@@ -44,6 +46,7 @@ function Registration() {
     const length = password.length >= 8;
     // setPassword(password);
     setPwdValidation({ lowercase, uppercase, number, symbol, length });
+    setPassword(e.target.value);
   };
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -52,26 +55,28 @@ function Registration() {
       setError("Please enter a valid email address");
     } else {
       setError("");
-    }
-    console.log(JSON.stringify(password) + "Password");
-    if (JSON.stringify(password) != cpassword) {
-      alert("Password doesn't match");
-    }
-    if (login.length == 0) {
-      setLogin([...login, { email: email, password: password }]);
-      localStorage.setItem(
-        "login",
-        JSON.stringify([...login, { email: email, password: password }])
-      );
-    } else {
-      if (login.some((e) => e.email == email)) {
-        return alert("user already exist");
+      if (pass != cpassword) {
+        alert("Password doesn't match");
       } else {
-        setLogin([...login, { email: email, password: password }]);
-        localStorage.setItem(
-          "login",
-          JSON.stringify([...login, { email: email, password: password }])
-        );
+        if (login.length == 0) {
+          setLogin([...login, { email: email, password: pass }]);
+          localStorage.setItem(
+            "login",
+            JSON.stringify([...login, { email: email, password: pass }])
+          );
+          navigate("/login");
+        } else {
+          if (login.some((e) => e.email == email)) {
+            return alert("user already exist");
+          } else {
+            setLogin([...login, { email: email, password: pass }]);
+            localStorage.setItem(
+              "login",
+              JSON.stringify([...login, { email: email, password: pass }])
+            );
+            navigate("/login");
+          }
+        }
       }
     }
   };
@@ -101,9 +106,8 @@ function Registration() {
                   onChange={(e) => setEmail(e.target.value)}
                   required
                 />
-                {error}
+                <div className="text-danger">{error}</div>
               </Form.Group>
-
               <Form.Group className="mb-3" controlId="formBasicPassword">
                 <Form.Label>Password</Form.Label>
                 <Form.Control

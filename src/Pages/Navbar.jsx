@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
@@ -7,13 +7,22 @@ import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import { Outlet } from "react-router-dom";
 import { useState } from "react";
+import { Link } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 
 function NavbarHeader() {
-  const [user, setUser] = useState([]);
+  // let user = JSON.parse(localStorage.getItem("userlogin"));
+  const [user, setUser] = useState("");
+  const [value, setValue] = useState();
+  const [, setSearchparam] = useSearchParams();
   useEffect(() => {
-    const values = JSON.parse(localStorage.getItem("userlogin"));
-    setUser(values);
+    setUser(JSON.parse(localStorage.getItem("userlogin")) || null);
   }, []);
+  const logout = () => {
+    localStorage.removeItem("userlogin");
+    window.location.reload();
+  };
+
   return (
     <>
       <Navbar bg="light" expand="lg">
@@ -26,7 +35,18 @@ function NavbarHeader() {
               style={{ maxHeight: "100px" }}
               navbarScroll
             >
-              <Nav.Link to="/">Home</Nav.Link>
+              <Nav.Link as={Link} to="/">
+                Home
+              </Nav.Link>
+              <Nav.Link as={Link} to="/smartphones">
+                SmartPhones
+              </Nav.Link>
+              <Nav.Link as={Link} to="/laptops">
+                Laptops
+              </Nav.Link>
+              <Nav.Link as={Link} to="/skincare">
+                Skin Care
+              </Nav.Link>
             </Nav>
             <Form className="d-flex">
               <Form.Control
@@ -34,24 +54,43 @@ function NavbarHeader() {
                 placeholder="Search"
                 className="me-2"
                 aria-label="Search"
+                onChange={(e) => {
+                  setSearchparam({ search: e.target.value.toLowerCase() });
+                }}
               />
               <Button variant="outline-success">Search</Button>
             </Form>
-
-            {!user && <Nav.Link>Login</Nav.Link>}
-
-            {!user && <Nav.Link> Register</Nav.Link>}
-
+            {!user && (
+              <Nav.Link as={Link} to="/login">
+                Login{" "}
+              </Nav.Link>
+            )}
+            &nbsp;
+            {!user && (
+              <Nav.Link as={Link} to="/signup">
+                {" "}
+                Register
+              </Nav.Link>
+            )}
             {user && (
               <NavDropdown
-                title={user.email && user.email.split("@")[0]}
+                title={user && user.split("@")[0]}
                 id="navbarScrollingDropdown"
                 className=""
               >
                 <NavDropdown.Item>
-                  <Nav.Link>Cart</Nav.Link>
+                  <Nav.Link>
+                    Cart{" "}
+                    <span>
+                      {(JSON.parse(localStorage.getItem(user)) &&
+                        JSON.parse(localStorage.getItem(user)).length) ||
+                        0}
+                    </span>
+                  </Nav.Link>
                 </NavDropdown.Item>
-                <NavDropdown.Item>Logout</NavDropdown.Item>
+                <NavDropdown.Item onClick={() => logout()}>
+                  Logout
+                </NavDropdown.Item>
               </NavDropdown>
             )}
           </Navbar.Collapse>

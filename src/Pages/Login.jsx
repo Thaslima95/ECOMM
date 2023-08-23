@@ -19,8 +19,8 @@ export default function Login() {
     const found = logindetails.find((e) => e.email == email);
     if (found) {
       if (found.password == password) {
-        localStorage.setItem("userlogin", JSON.stringify(found));
-        navigate("/");
+        localStorage.setItem("userlogin", JSON.stringify(found.email));
+        navigate(`/`);
       } else {
         alert("Wrong Password");
       }

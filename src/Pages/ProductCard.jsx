@@ -14,12 +14,10 @@ function ProductCard({ product }) {
     const savedTodos = JSON.parse(localStorage.getItem("mycart")) || [];
     setLocalcart(savedTodos);
   }, []);
-  console.log(product);
-  console.log(title);
+
   const addtoCart = () => {
-    console.log(product);
     setLocalcart([...localcart, product]);
-    console.log(localcart);
+
     localStorage.setItem("mycart", JSON.stringify([...localcart, product]));
   };
   return (
