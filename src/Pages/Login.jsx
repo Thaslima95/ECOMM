@@ -66,7 +66,7 @@ export default function Login() {
               </Button>
             </Card.Body>
             <Link to="/signup">
-              <Button className="registerButton">Create an account</Button>
+              <Button>Create an account</Button>
             </Link>
           </Card>
         </Col>
