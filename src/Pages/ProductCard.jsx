@@ -15,11 +15,6 @@ function ProductCard({ product }) {
     setLocalcart(savedTodos);
   }, []);
 
-  const addtoCart = () => {
-    setLocalcart([...localcart, product]);
-
-    localStorage.setItem("mycart", JSON.stringify([...localcart, product]));
-  };
   return (
     <Card
       cover={
@@ -33,7 +28,7 @@ function ProductCard({ product }) {
         <Link to={`/product/${id}`}>
           <EyeOutlined className="text-warning" /> <br /> View Product
         </Link>,
-        <a onClick={addtoCart}>
+        <a>
           <ShoppingCartOutlined className="text-success" /> <br /> Add to Cart
         </a>,
       ]}

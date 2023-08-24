@@ -8,6 +8,7 @@ import Home from './Pages/Home';
 import { BrowserRouter,Routes,Route } from 'react-router-dom';
 import Login from './Pages/Login';
 import Registration from './Pages/Registration';
+import CartPage from './Pages/CartPage';
 
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
     <Route path='/login' element={<Login/>}/>
     <Route path='/signup' element={<Registration/>}/>
     <Route path='/:Electronics' element={<Home/>}/>
+    <Route path='/cart' element={<CartPage/>}/>
     </Route>
   </Routes>
 

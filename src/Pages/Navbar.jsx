@@ -47,6 +47,12 @@ function NavbarHeader() {
               <Nav.Link as={Link} to="/skincare">
                 Skin Care
               </Nav.Link>
+              <Nav.Link as={Link} to="/groceries">
+                Grocery
+              </Nav.Link>
+              <Nav.Link as={Link} to="/home">
+                Home Decors
+              </Nav.Link>
             </Nav>
             <Form className="d-flex">
               <Form.Control
@@ -62,13 +68,12 @@ function NavbarHeader() {
             </Form>
             {!user && (
               <Nav.Link as={Link} to="/login">
-                Login{" "}
+                Login
               </Nav.Link>
             )}
             &nbsp;
             {!user && (
               <Nav.Link as={Link} to="/signup">
-                {" "}
                 Register
               </Nav.Link>
             )}
@@ -79,8 +84,8 @@ function NavbarHeader() {
                 className=""
               >
                 <NavDropdown.Item>
-                  <Nav.Link>
-                    Cart{" "}
+                  <Nav.Link as={Link} to="/cart">
+                    Cart
                     <span>
                       {(JSON.parse(localStorage.getItem(user)) &&
                         JSON.parse(localStorage.getItem(user)).length) ||
